@@ -1,24 +1,31 @@
 package edu.aitu.campus.db;
 
+import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class DatabaseConnection {
 
-    private static final String URL =
-            "jdbc:postgresql://aws-1-ap-south-1.pooler.supabase.com:5432/postgres?sslmode=require";
+    private static final Properties props = new Properties();
 
-    private static final String USER =
-            "postgres.mldyofrrtrljlvqnuexv";
-
-    private static final String PASSWORD =
-            "87775043545k";
+    static {
+        try (FileInputStream fis = new FileInputStream("src/db.properties")) {
+            props.load(fis);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to load db.properties", e);
+        }
+    }
 
     private DatabaseConnection() {
     }
 
     public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASSWORD);
+        return DriverManager.getConnection(
+                props.getProperty("db.url"),
+                props.getProperty("db.user"),
+                props.getProperty("db.password")
+        );
     }
 }
