@@ -7,12 +7,12 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudentRepository {
+public class StudentRepository implements Repository<Student> {
 
     public void save(Student student) throws SQLException {
         String sql = "INSERT INTO students (name, email) VALUES (?, ?)";
 
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, student.getName());
@@ -24,7 +24,7 @@ public class StudentRepository {
     public Student findById(int id) throws SQLException {
         String sql = "SELECT * FROM students WHERE id = ?";
 
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, id);
@@ -45,7 +45,7 @@ public class StudentRepository {
         String sql = "SELECT * FROM students";
         List<Student> list = new ArrayList<>();
 
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
 

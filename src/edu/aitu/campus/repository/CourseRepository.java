@@ -12,7 +12,7 @@ public class CourseRepository {
     public void save(Course course) throws SQLException {
         String sql = "INSERT INTO courses (title, capacity, day, time) VALUES (?, ?, ?, ?)";
 
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, course.getTitle());
@@ -26,7 +26,7 @@ public class CourseRepository {
     public Course findById(int id) throws SQLException {
         String sql = "SELECT * FROM courses WHERE id = ?";
 
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, id);
@@ -49,7 +49,7 @@ public class CourseRepository {
         String sql = "SELECT * FROM courses";
         List<Course> list = new ArrayList<>();
 
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
 
@@ -69,7 +69,7 @@ public class CourseRepository {
     public void deleteById(int id) throws SQLException {
         String sql = "DELETE FROM courses WHERE id = ?";
 
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, id);
