@@ -15,7 +15,7 @@ public class EnrollmentRepository {
     public void save(int studentId, int courseId) throws SQLException {
         String sql = "INSERT INTO enrollments (student_id, course_id) VALUES (?, ?)";
 
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, studentId);
@@ -27,7 +27,7 @@ public class EnrollmentRepository {
     public void delete(int studentId, int courseId) throws SQLException {
         String sql = "DELETE FROM enrollments WHERE student_id = ? AND course_id = ?";
 
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, studentId);
@@ -39,7 +39,7 @@ public class EnrollmentRepository {
     public int countByCourseId(int courseId) throws SQLException {
         String sql = "SELECT COUNT(*) FROM enrollments WHERE course_id = ?";
 
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, courseId);
@@ -56,7 +56,7 @@ public class EnrollmentRepository {
         String sql = "SELECT * FROM enrollments WHERE course_id = ?";
         List<Enrollment> list = new ArrayList<>();
 
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, courseId);
@@ -77,7 +77,7 @@ public class EnrollmentRepository {
         String sql = "SELECT * FROM enrollments WHERE student_id = ?";
         List<Enrollment> list = new ArrayList<>();
 
-        try (Connection conn = DatabaseConnection.getConnection();
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setInt(1, studentId);
