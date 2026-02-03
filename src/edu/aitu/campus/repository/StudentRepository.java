@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudentRepository {
+public class StudentRepository implements Repository<Student> {
 
     public void save(Student student) throws SQLException {
         String sql = "INSERT INTO students (name, email) VALUES (?, ?)";
