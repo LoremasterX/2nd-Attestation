@@ -1,27 +1,40 @@
 package edu.aitu.campus.db;
 
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class DatabaseConnection {
 
     private static DatabaseConnection instance;
 
-    private static final String URL =
-            "jdbc:postgresql://aws-1-ap-south-1.pooler.supabase.com:5432/postgres?sslmode=require";
+    private String url;
+    private String user;
+    private String password;
 
-    private static final String USER =
-            "postgres.mldyofrrtrljlvqnuexv";
-
-    private static final String PASSWORD =
-            "YOUR_PASSWORD_HERE";
-
-    // private constructor k Singletonu
     private DatabaseConnection() {
+        try {
+            Properties props = new Properties();
+            InputStream input =
+                    getClass().getClassLoader().getResourceAsStream("db.properties");
+
+            if (input == null) {
+                throw new RuntimeException("db.properties not found");
+            }
+
+            props.load(input);
+
+            this.url = props.getProperty("db.url");
+            this.user = props.getProperty("db.user");
+            this.password = props.getProperty("db.password");
+
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to load database config", e);
+        }
     }
 
-    // global access point
     public static DatabaseConnection getInstance() {
         if (instance == null) {
             instance = new DatabaseConnection();
@@ -29,8 +42,7 @@ public class DatabaseConnection {
         return instance;
     }
 
-    // get JDBC connection
     public Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASSWORD);
+        return DriverManager.getConnection(url, user, password);
     }
 }

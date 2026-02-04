@@ -12,6 +12,7 @@ import edu.aitu.campus.service.CourseService;
 import edu.aitu.campus.service.EnrollmentService;
 
 import java.sql.SQLException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -88,8 +89,10 @@ public class Main {
                             for (Enrollment e : enrollments) {
                                 Student st = studentRepo.findById(e.getStudentId());
                                 if (st != null) {
-                                    System.out.printf(" - id=%d, name=%s, email=%s%n",
-                                            st.getId(), st.getName(), st.getEmail());
+                                    System.out.printf(
+                                            " - id=%d, name=%s, email=%s%n",
+                                            st.getId(), st.getName(), st.getEmail()
+                                    );
                                 }
                             }
                         }
@@ -102,25 +105,36 @@ public class Main {
                         } else {
                             System.out.println("All students:");
                             for (Student st : students) {
-                                System.out.printf(" - id=%d, name=%s, email=%s%n",
-                                        st.getId(), st.getName(), st.getEmail());
+                                System.out.printf(
+                                        " - id=%d, name=%s, email=%s%n",
+                                        st.getId(), st.getName(), st.getEmail()
+                                );
                             }
                         }
                         break;
 
-                    case 5: // list courses
+                    case 5: // list courses (SORTED WITH LAMBDA)
                         List<Course> courses = courseRepo.findAll();
                         if (courses.isEmpty()) {
                             System.out.println("No courses found.");
                         } else {
-                            System.out.println("All courses:");
-                            for (Course c : courses) {
-                                System.out.printf(
-                                        " - id=%d, title=%s, capacity=%d, day=%s, time=%s%n",
-                                        c.getId(), c.getTitle(), c.getCapacity(),
-                                        c.getDay(), c.getTime()
-                                );
-                            }
+                            System.out.println("All courses (sorted by day, time, title):");
+
+                            courses.stream()
+                                    .sorted(
+                                            Comparator
+                                                    .comparing(Course::getDay, String.CASE_INSENSITIVE_ORDER)
+                                                    .thenComparing(Course::getTime)
+                                                    .thenComparing(Course::getTitle, String.CASE_INSENSITIVE_ORDER)
+                                    )
+                                    .forEach(c -> System.out.printf(
+                                            " - id=%d, title=%s, capacity=%d, day=%s, time=%s%n",
+                                            c.getId(),
+                                            c.getTitle(),
+                                            c.getCapacity(),
+                                            c.getDay(),
+                                            c.getTime()
+                                    ));
                         }
                         break;
 
@@ -157,7 +171,7 @@ public class Main {
         System.out.println(" 2 - Drop student from course");
         System.out.println(" 3 - Show students enrolled in a course");
         System.out.println(" 4 - Show all students");
-        System.out.println(" 5 - Show all courses");
+        System.out.println(" 5 - Show all courses (sorted)");
         System.out.println(" 6 - Delete course");
     }
 
