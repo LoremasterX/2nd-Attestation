@@ -1,5 +1,7 @@
 Galym Arsen
 Zhumadilla Saniya
+
+Report:
 Course name:
 Object Oriented Programming (Java)
 
@@ -19,8 +21,8 @@ Project title:
 Campus Course Registration System
 
 Team members:
-– Your Name
-– Teammate Name
+– Galym Arsen
+– Zhumadilla Saniya
 
 1. Project Topic & Overview
 
@@ -146,3 +148,4 @@ Low coupling via repositories and services
 
 The system is modular, extendable, and follows OOP principles and design patterns.
 It can be easily extended with new course types, reports, or UI layers.
+
